@@ -6,135 +6,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ================= RESET ================= */
+/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
 
-/* ================= FUNDO ================= */
-body{
-  min-height:100vh;
-  background:#000;
-  overflow:hidden;
-  color:#fff;
-}
+/* FUNDO FIRE + PARTICULAS */
+body{overflow:hidden;background:#000;color:#fff;}
+canvas#fire{position:fixed;inset:0;z-index:0}
 
-/* ================= FIRE CANVAS ================= */
-#fire{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
+/* APP CARD */
+#app{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{width:95%;max-width:1200px;min-height:700px;background:linear-gradient(145deg,#050505,#0a0a0a);border-radius:30px;padding:40px;box-shadow:0 0 80px #ff3c00;animation:enter 1s ease}
 
-/* ================= APP ================= */
-#app{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+/* TITULO */
+h1{text-align:center;font-size:50px;background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);-webkit-background-clip:text;color:transparent;margin-bottom:30px}
 
-/* ================= CARD ================= */
-.card{
-  width:95%;
-  max-width:1100px;
-  min-height:650px;
-  background:linear-gradient(145deg,#050505,#0a0a0a);
-  border-radius:30px;
-  padding:40px;
-  box-shadow:0 0 80px #ff3c00;
-  animation:enter 1s ease;
-}
+/* LOGIN */
+#login{max-width:500px;margin:auto;animation:fadeIn 1s ease}
+input{width:100%;padding:18px;margin:10px 0;border:none;border-radius:16px;font-size:18px}
+button{width:100%;padding:18px;margin-top:10px;border:none;border-radius:18px;background:linear-gradient(90deg,#ff3c00,#ffaa00);font-size:20px;font-weight:bold;cursor:pointer}
+#error{margin-top:15px;text-align:center;color:#ff0000;font-weight:bold;display:none;animation:shake .4s}
 
-@keyframes enter{
-  from{opacity:0;transform:scale(.9)}
-  to{opacity:1;transform:scale(1)}
-}
+/* SHAKE */
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}100%{transform:translateX(0)}}
 
-/* ================= TITLES ================= */
-h1{
-  text-align:center;
-  font-size:48px;
-  background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);
-  -webkit-background-clip:text;
-  color:transparent;
-  margin-bottom:30px;
-}
+/* PANEL */
+#panel{display:none;margin-top:20px}
+.tabs{display:flex;gap:10px;margin-bottom:20px}
+.tabs button{flex:1;padding:14px;border:none;border-radius:14px;background:#111;color:#fff;font-size:16px;cursor:pointer}
+.tabs button.active{background:#ff3c00;color:#000;font-weight:bold}
+.panel{display:none;background:rgba(15,15,15,.85);border-radius:22px;padding:25px;box-shadow:0 0 30px #000}
+.panel.active{display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.box{background:#080808;padding:25px;border-radius:22px;box-shadow:0 0 25px #ff3c0033}
+.box h2{color:#ffaa00;margin-bottom:15px}
+.result{font-size:20px;line-height:1.6;margin-top:10px}
+.sliderBox{margin:18px 0}
+.sliderBox label{display:flex;justify-content:space-between;font-size:14px;opacity:.85}
+input[type=range]{width:100%}
 
-/* ================= LOGIN ================= */
-#login{
-  max-width:500px;
-  margin:auto;
-}
+/* LOG */
+.log{margin-top:15px;font-family:monospace;font-size:13px;background:#000;padding:12px;border-radius:12px;height:120px;overflow:auto;color:#7cff00}
 
-input{
-  width:100%;
-  padding:18px;
-  margin:10px 0;
-  border:none;
-  border-radius:16px;
-  font-size:18px;
-}
-
-button{
-  width:100%;
-  padding:18px;
-  margin-top:10px;
-  border:none;
-  border-radius:18px;
-  background:linear-gradient(90deg,#ff3c00,#ffaa00);
-  font-size:20px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-#error{
-  margin-top:15px;
-  text-align:center;
-  color:#ff0000;
-  font-weight:bold;
-  display:none;
-  animation:shake .4s;
-}
-
-@keyframes shake{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-8px)}
-  50%{transform:translateX(8px)}
-  75%{transform:translateX(-8px)}
-  100%{transform:translateX(0)}
-}
-
-/* ================= PANEL ================= */
-#panel{display:none}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:30px;
-}
-
-.box{
-  background:#080808;
-  padding:25px;
-  border-radius:22px;
-  box-shadow:0 0 25px #ff3c0033;
-}
-
-.box h2{
-  color:#ffaa00;
-  margin-bottom:15px;
-}
-
-/* ================= RESULT ================= */
-.result{
-  font-size:20px;
-  line-height:1.6;
-  margin-top:10px;
-}
+/* ANIMACAO */
+@keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style>
 </head>
-
 <body>
 
 <canvas id="fire"></canvas>
@@ -152,29 +69,55 @@ button{
       <div id="error">LOGIN OU SENHA INCORRETOS</div>
     </div>
 
-    <!-- PANEL -->
+    <!-- PANEL PRINCIPAL -->
     <div id="panel">
-      <div class="grid">
 
-        <div class="box">
-          <h2>IA DE SENSIBILIDADE</h2>
-          <input id="device" placeholder="Digite seu aparelho">
-          <button onclick="generate()">GERAR SENSI PERFEITA</button>
-          <div id="out" class="result"></div>
-        </div>
-
-        <div class="box">
-          <h2>SISTEMA INTELIGENTE</h2>
-          <p>
-            • IA exclusiva<br>
-            • Não repete valores<br>
-            • Aprende por aparelho<br>
-            • Perfil salvo automaticamente<br>
-            • Cálculo dinâmico avançado
-          </p>
-        </div>
-
+      <div class="tabs">
+        <button class="active" onclick="openTab('tab1',this)">Gerar Sensi</button>
+        <button onclick="openTab('tab2',this)">Injetar</button>
       </div>
+
+      <!-- ABA GERAR SENSI -->
+      <div id="tab1" class="panel active">
+        <div class="grid">
+          <div class="box">
+            <h2>Gerador Inteligente</h2>
+            <input id="device" placeholder="Digite seu aparelho">
+            <button onclick="generate()">GERAR SENSI PERFEITA</button>
+            <div id="out" class="result"></div>
+          </div>
+
+          <div class="box">
+            <h2>Informações</h2>
+            <p>• IA exclusiva</p>
+            <p>• Aprendizado por aparelho</p>
+            <p>• Não repete valores</p>
+            <p>• Valores dinâmicos perfeitos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA INJETAR -->
+      <div id="tab2" class="panel">
+        <div class="box">
+          <h2>Injetar (SIMULAÇÃO)</h2>
+          <div class="sliderBox">
+            <label><span>iFov</span><span id="fovVal">50</span></label>
+            <input type="range" min="0" max="100" value="50" oninput="fovVal.innerText=this.value">
+          </div>
+          <div class="sliderBox">
+            <label><span>iLock Recoil</span><span id="lockVal">30</span></label>
+            <input type="range" min="0" max="100" value="30" oninput="lockVal.innerText=this.value">
+          </div>
+          <div class="sliderBox">
+            <label><span>Mira Calibrada</span><span id="aimVal">70</span></label>
+            <input type="range" min="0" max="100" value="70" oninput="aimVal.innerText=this.value">
+          </div>
+          <button class="btn" onclick="inject()">INJETAR</button>
+          <div class="log" id="log"></div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -184,7 +127,8 @@ button{
 /* ================= LOGIN ================= */
 function login(){
   if(user.value==="oliveira.2ss" && pass.value==="HS70%"){
-    loginBox()
+    login.style.display="none"
+    panel.style.display="block"
   }else{
     error.style.display="block"
     error.style.animation="none"
@@ -193,9 +137,12 @@ function login(){
   }
 }
 
-function loginBox(){
-  login.style.display="none"
-  panel.style.display="block"
+/* ================= TABS ================= */
+function openTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'))
+  document.getElementById(id).classList.add('active')
+  btn.classList.add('active')
 }
 
 /* ================= IA SENSI ================= */
@@ -208,9 +155,7 @@ function generate(){
 
   function unique(min,max){
     let v
-    do{
-      v=Math.floor(Math.random()*(max-min+1))+min
-    }while(mem[d].includes(v))
+    do{v=Math.floor(Math.random()*(max-min+1))+min}while(mem[d].includes(v))
     mem[d].push(v)
     return v
   }
@@ -235,28 +180,33 @@ function generate(){
   `
 }
 
+/* ================= INJECT SIM ================= */
+function inject(){
+  const log=document.getElementById("log")
+  log.innerHTML=""
+  let steps=[
+    "[OK] Inicializando módulo...",
+    "[OK] Carregando parâmetros...",
+    "[OK] Aplicando sensibilidade...",
+    "[SUCCESS] Simulação concluída"
+  ]
+  let i=0
+  let timer=setInterval(()=>{
+    log.innerHTML+=steps[i]+"<br>"
+    log.scrollTop=9999
+    i++
+    if(i>=steps.length)clearInterval(timer)
+  },500)
+}
+
 /* ================= FIRE EFFECT ================= */
 const c=document.getElementById("fire")
 const ctx=c.getContext("2d")
 let w,h,particles=[]
-
-function resize(){
-  w=c.width=window.innerWidth
-  h=c.height=window.innerHeight
-}
+function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
 window.onresize=resize
 resize()
-
-function spawn(){
-  particles.push({
-    x:Math.random()*w,
-    y:h+20,
-    r:Math.random()*4+2,
-    v:Math.random()*2+1,
-    a:1
-  })
-}
-
+function spawn(){particles.push({x:Math.random()*w,y:h+20,r:Math.random()*4+2,v:Math.random()*2+1,a:1})}
 function loop(){
   ctx.clearRect(0,0,w,h)
   spawn()
