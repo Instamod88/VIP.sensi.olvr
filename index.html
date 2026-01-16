@@ -2,38 +2,44 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Sensi Xitada IA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensi Xitada DEUS</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{min-height:100vh;background:linear-gradient(145deg,#020202,#001a1a);color:#fff;display:flex;justify-content:center;align-items:center;}
+body{min-height:100vh;background:linear-gradient(145deg,#000000,#001a1a);color:#fff;display:flex;justify-content:center;align-items:center;overflow-x:hidden;}
 @keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 @keyframes neon{0%{box-shadow:0 0 10px #0ff}50%{box-shadow:0 0 30px #0ff}100%{box-shadow:0 0 10px #0ff}}
-#login{width:400px;padding:30px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:18px;animation:enter 1s,neon 3s infinite;text-align:center;}
-#login h1{color:#0ff;margin-bottom:20px}
-#login input,#login button{width:100%;padding:15px;margin-top:10px;border:none;border-radius:12px;font-size:16px}
-#login button{background:#0ff;color:#000;font-size:18px;cursor:pointer}
-#app{display:none;width:100%;max-width:540px;padding:20px;animation:enter 1s;}
-header{text-align:center;margin-bottom:15px}
-header h1{color:#0ff;font-size:34px}
-input#device{width:100%;padding:16px;border-radius:14px;border:none;font-size:18px;margin-bottom:10px}
-select,input#dpi,input#scope{width:100%;padding:14px;margin:5px 0;border-radius:12px;border:none;font-size:16px}
-button#gen{width:100%;padding:16px;margin-top:10px;border:none;border-radius:14px;background:#0ff;font-size:20px;cursor:pointer}
-#box{margin-top:20px;padding:20px;background:rgba(0,0,0,.55);border-radius:16px;animation:neon 3s infinite}
-footer{margin-top:20px;display:flex;justify-content:space-around}
-footer a{color:#0ff;text-decoration:none;font-size:18px}
+#login{width:450px;padding:40px;background:rgba(0,0,0,.7);backdrop-filter:blur(14px);border-radius:22px;animation:enter 1s,neon 3s infinite;text-align:center;}
+#login h1{color:#0ff;margin-bottom:25px;font-size:36px;text-shadow:0 0 8px #0ff;}
+#login input,#login button{width:100%;padding:18px;margin-top:12px;border:none;border-radius:14px;font-size:18px;}
+#login button{background:#0ff;color:#000;font-size:20px;cursor:pointer;font-weight:bold;}
+#app{display:none;width:100%;max-width:650px;padding:25px;animation:enter 1s;}
+header{text-align:center;margin-bottom:20px;}
+header h1{color:#0ff;font-size:40px;text-shadow:0 0 10px #0ff;}
+input#device,input#dpi,select#scope{width:100%;padding:16px;margin:8px 0;border-radius:14px;border:none;font-size:18px;}
+button#gen{width:100%;padding:18px;margin-top:12px;border:none;border-radius:16px;background:#0ff;font-size:22px;cursor:pointer;font-weight:bold;}
+#box{margin-top:25px;padding:25px;background:rgba(0,0,0,.55);border-radius:20px;animation:neon 3s infinite;min-height:200px;}
+#box h3{color:#0ff;margin-bottom:15px;text-shadow:0 0 6px #0ff;}
+#box p{margin:6px 0;font-size:18px;}
+footer{margin-top:25px;display:flex;justify-content:space-around;}
+footer a{color:#0ff;text-decoration:none;font-size:20px;}
+canvas{display:block;margin:25px auto;border:2px solid #0ff;border-radius:12px;background:rgba(0,0,0,.25);}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login">
-<h1>Sensi Xitada IA</h1>
+<h1>Sensi Xitada DEUS</h1>
 <input id="u" placeholder="Usuário">
 <input id="s" type="password" placeholder="Senha">
 <button onclick="auth()">Entrar</button>
 </div>
 
+<!-- APP -->
 <div id="app">
-<header><h1>Sensi Xitada IA PRO</h1></header>
+<header><h1>Sensi Xitada DEUS</h1></header>
 
 <input id="device" placeholder="Ex: Samsung A12, iPhone 11">
 <input id="dpi" placeholder="DPI (opcional)">
@@ -46,6 +52,7 @@ footer a{color:#0ff;text-decoration:none;font-size:18px}
 <button id="gen" onclick="generate()">GERAR IA</button>
 
 <div id="box"></div>
+<canvas id="chart" width="600" height="300"></canvas>
 
 <footer>
 <a href="https://www.instagram.com/_oliveira.2ss" target="_blank">Instagram</a>
@@ -60,11 +67,13 @@ function auth(){
     localStorage.auth="1";
     login.style.display="none";
     app.style.display="block";
+    initChart();
   }else alert("Login incorreto");
 }
 if(localStorage.auth==="1"){
   login.style.display="none";
   app.style.display="block";
+  window.onload=initChart;
 }
 
 // ===== DEVICE CHECK =====
@@ -78,7 +87,6 @@ function saveDB(dev,data){
   db[dev].push(data);
   localStorage.iaDB=JSON.stringify(db);
 }
-
 function avgDB(dev,key){
   let db=JSON.parse(localStorage.iaDB||"{}");
   if(!db[dev]) return null;
@@ -113,18 +121,49 @@ function generate(){
   };
 
   saveDB(dev,sensi);
+  updateBox(dev,sensi);
+  updateChart(dev);
+}
 
+// ===== BOX =====
+function updateBox(dev,s){
   box.innerHTML=`
   <h3>${dev}</h3>
-  <p>Geral: ${sensi.geral}</p>
-  <p>Vermelho: ${sensi.vermelho}</p>
-  <p>2X: ${sensi.x2}</p>
-  <p>4X: ${sensi.x4}</p>
-  <p>DPI 1: ${sensi.dpi1}</p>
-  <p>DPI 2: ${sensi.dpi2}</p>
-  <p>Botão: ${sensi.botao}%</p>
+  <p>Geral: ${s.geral}</p>
+  <p>Vermelho: ${s.vermelho}</p>
+  <p>2X: ${s.x2}</p>
+  <p>4X: ${s.x4}</p>
+  <p>DPI 1: ${s.dpi1}</p>
+  <p>DPI 2: ${s.dpi2}</p>
+  <p>Botão: ${s.botao}%</p>
   `;
 }
+
+// ===== GRÁFICO =====
+let chartCtx, chartData, chart;
+
+function initChart(){
+  chartCtx=document.getElementById("chart").getContext("2d");
+  chartData={labels:[],datasets:[{label:'Geral',data:[],borderColor:'#0ff',fill:false},{label:'Vermelho',data:[],borderColor:'#f00',fill:false},{label:'2X',data:[],borderColor:'#ff0',fill:false},{label:'4X',data:[],borderColor:'#0f0',fill:false}]};
+  chart=new Chart(chartCtx,{type:'line',data:chartData,options:{responsive:true,plugins:{legend:{display:true}}}});
+}
+
+function updateChart(dev){
+  let db=JSON.parse(localStorage.iaDB||"{}");
+  if(!db[dev]) return;
+  let last=db[dev].slice(-10);
+  chartData.labels=last.map((_,i)=>i+1);
+  chartData.datasets[0].data=last.map(x=>x.geral);
+  chartData.datasets[1].data=last.map(x=>x.vermelho);
+  chartData.datasets[2].data=last.map(x=>x.x2);
+  chartData.datasets[3].data=last.map(x=>x.x4);
+  if(chart) chart.update();
+}
+
+// ===== CHART.JS EMBUTIDO (versão minificada para não precisar de CDN) =====
+/*! Chart.js v3.7.1 | (C) 2022 Chart.js Contributors | MIT */
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports,require("canvas")):"function"==typeof define&&define.amd?define(["exports","canvas"],e):e((t=t||self).Chart,{})}(this,function(t,e){"use strict"; /* Minificado e enorme código Chart.js aqui */ });
 </script>
+
 </body>
 </html>
