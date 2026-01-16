@@ -2,278 +2,277 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Sensi Xitada • Painel PRO</title>
+<title>Sensi Xitada • GOD PANEL</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 /* ================= RESET ================= */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
 
-/* ================= TEMA ================= */
-:root{
-  --neon:#00ffff;
-  --neon2:#7cff00;
-  --bg:#050505;
-  --panel:rgba(15,15,15,.85);
+/* ================= FUNDO ================= */
+body{
+  min-height:100vh;
+  background:#000;
+  overflow:hidden;
+  color:#fff;
 }
 
-body{
-  background:
-    radial-gradient(circle at top,#001818,#000),
-    var(--bg);
-  color:#fff;
-  min-height:100vh;
+/* ================= FIRE CANVAS ================= */
+#fire{
+  position:fixed;
+  inset:0;
+  z-index:0;
 }
 
 /* ================= APP ================= */
 #app{
-  max-width:1100px;
-  margin:auto;
-  padding:25px;
-  animation:fade .8s ease;
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-@keyframes fade{
-  from{opacity:0;transform:scale(.97)}
+/* ================= CARD ================= */
+.card{
+  width:95%;
+  max-width:1100px;
+  min-height:650px;
+  background:linear-gradient(145deg,#050505,#0a0a0a);
+  border-radius:30px;
+  padding:40px;
+  box-shadow:0 0 80px #ff3c00;
+  animation:enter 1s ease;
+}
+
+@keyframes enter{
+  from{opacity:0;transform:scale(.9)}
   to{opacity:1;transform:scale(1)}
 }
 
-/* ================= HEADER ================= */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:25px;
+/* ================= TITLES ================= */
+h1{
+  text-align:center;
+  font-size:48px;
+  background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:30px;
 }
 
-header h1{
-  color:var(--neon);
-  text-shadow:0 0 12px var(--neon);
+/* ================= LOGIN ================= */
+#login{
+  max-width:500px;
+  margin:auto;
 }
 
-header span{
-  font-size:14px;
-  opacity:.7;
-}
-
-/* ================= TABS ================= */
-.tabs{
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.tabs button{
-  flex:1;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:#111;
-  color:#fff;
-  cursor:pointer;
-  font-size:16px;
-}
-
-.tabs button.active{
-  background:var(--neon);
-  color:#000;
-  font-weight:bold;
-}
-
-/* ================= PANELS ================= */
-.panel{
-  display:none;
-  background:var(--panel);
-  border-radius:22px;
-  padding:25px;
-  box-shadow:0 0 30px #000;
-}
-
-.panel.active{display:block}
-
-/* ================= INPUTS ================= */
-input,select{
+input{
   width:100%;
-  padding:14px;
-  border-radius:12px;
+  padding:18px;
+  margin:10px 0;
   border:none;
-  margin:8px 0;
-  font-size:16px;
-}
-
-/* ================= BUTTON ================= */
-.btn{
-  width:100%;
-  padding:16px;
-  margin-top:12px;
-  border:none;
-  border-radius:14px;
-  background:var(--neon);
-  color:#000;
+  border-radius:16px;
   font-size:18px;
+}
+
+button{
+  width:100%;
+  padding:18px;
+  margin-top:10px;
+  border:none;
+  border-radius:18px;
+  background:linear-gradient(90deg,#ff3c00,#ffaa00);
+  font-size:20px;
   font-weight:bold;
   cursor:pointer;
-  box-shadow:0 0 15px var(--neon);
+}
+
+#error{
+  margin-top:15px;
+  text-align:center;
+  color:#ff0000;
+  font-weight:bold;
+  display:none;
+  animation:shake .4s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  50%{transform:translateX(8px)}
+  75%{transform:translateX(-8px)}
+  100%{transform:translateX(0)}
+}
+
+/* ================= PANEL ================= */
+#panel{display:none}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+
+.box{
+  background:#080808;
+  padding:25px;
+  border-radius:22px;
+  box-shadow:0 0 25px #ff3c0033;
+}
+
+.box h2{
+  color:#ffaa00;
+  margin-bottom:15px;
 }
 
 /* ================= RESULT ================= */
 .result{
-  margin-top:20px;
-  padding:18px;
-  background:#0a0a0a;
-  border-radius:16px;
-  border:1px solid #0ff3;
-}
-
-/* ================= SLIDERS ================= */
-.sliderBox{
-  margin:18px 0;
-}
-
-.sliderBox label{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  opacity:.85;
-}
-
-input[type=range]{
-  width:100%;
-}
-
-/* ================= LOG ================= */
-.log{
-  margin-top:15px;
-  font-family:monospace;
-  font-size:13px;
-  background:#000;
-  padding:12px;
-  border-radius:12px;
-  height:120px;
-  overflow:auto;
-  color:#7cff00;
+  font-size:20px;
+  line-height:1.6;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
+
+<canvas id="fire"></canvas>
+
 <div id="app">
+  <div class="card">
 
-<header>
-  <h1>Sensi Xitada</h1>
-  <span>Painel PRO • Modelo</span>
-</header>
+    <h1>SENSI XITADA</h1>
 
-<div class="tabs">
-  <button class="active" onclick="openTab('sensi')">Sensibilidade IA</button>
-  <button onclick="openTab('inject')">Injetar</button>
-</div>
+    <!-- LOGIN -->
+    <div id="login">
+      <input id="user" placeholder="Usuário">
+      <input id="pass" type="password" placeholder="Senha">
+      <button onclick="login()">ENTRAR</button>
+      <div id="error">LOGIN OU SENHA INCORRETOS</div>
+    </div>
 
-<!-- ================= SENSI ================= -->
-<div id="sensi" class="panel active">
+    <!-- PANEL -->
+    <div id="panel">
+      <div class="grid">
 
-  <h2>Gerador Inteligente por Aparelho</h2>
+        <div class="box">
+          <h2>IA DE SENSIBILIDADE</h2>
+          <input id="device" placeholder="Digite seu aparelho">
+          <button onclick="generate()">GERAR SENSI PERFEITA</button>
+          <div id="out" class="result"></div>
+        </div>
 
-  <input id="device" placeholder="Ex: Samsung A12, iPhone 11">
+        <div class="box">
+          <h2>SISTEMA INTELIGENTE</h2>
+          <p>
+            • IA exclusiva<br>
+            • Não repete valores<br>
+            • Aprende por aparelho<br>
+            • Perfil salvo automaticamente<br>
+            • Cálculo dinâmico avançado
+          </p>
+        </div>
 
-  <button class="btn" onclick="generate()">GERAR SENSI IA</button>
+      </div>
+    </div>
 
-  <div id="output" class="result"></div>
-
-</div>
-
-<!-- ================= INJETAR ================= -->
-<div id="inject" class="panel">
-
-  <h2>Painel de Injeção (SIMULAÇÃO)</h2>
-  <p style="opacity:.6;font-size:14px;margin-bottom:10px">
-    Interface visual estilo cheat • Não injeta nada de verdade
-  </p>
-
-  <div class="sliderBox">
-    <label><span>iFov</span><span id="fovVal">50</span></label>
-    <input type="range" min="0" max="100" value="50"
-      oninput="fovVal.innerText=this.value">
   </div>
-
-  <div class="sliderBox">
-    <label><span>iLock Recoil</span><span id="lockVal">30</span></label>
-    <input type="range" min="0" max="100" value="30"
-      oninput="lockVal.innerText=this.value">
-  </div>
-
-  <div class="sliderBox">
-    <label><span>Mira Calibrada</span><span id="aimVal">70</span></label>
-    <input type="range" min="0" max="100" value="70"
-      oninput="aimVal.innerText=this.value">
-  </div>
-
-  <button class="btn" onclick="inject()">INJETAR</button>
-
-  <div class="log" id="log"></div>
-
-</div>
-
 </div>
 
 <script>
-/* ================= TABS ================= */
-function openTab(id){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
-  event.target.classList.add('active')
+/* ================= LOGIN ================= */
+function login(){
+  if(user.value==="oliveira.2ss" && pass.value==="HS70%"){
+    loginBox()
+  }else{
+    error.style.display="block"
+    error.style.animation="none"
+    error.offsetHeight
+    error.style.animation="shake .4s"
+  }
+}
+
+function loginBox(){
+  login.style.display="none"
+  panel.style.display="block"
 }
 
 /* ================= IA SENSI ================= */
 function generate(){
-  const dev=device.value.trim()
-  if(!dev){alert("Informe o aparelho");return}
+  const d=device.value.trim()
+  if(!d){alert("Informe o aparelho");return}
 
-  let base=170+(dev.length%15)
-  let sensi={
-    geral:rand(base,base+15),
-    red:rand(150,180),
-    x2:rand(170,190),
-    x4:rand(170,190),
-    botao:rand(27,60)
+  let mem=JSON.parse(localStorage.sensiDB||"{}")
+  if(!mem[d])mem[d]=[]
+
+  function unique(min,max){
+    let v
+    do{
+      v=Math.floor(Math.random()*(max-min+1))+min
+    }while(mem[d].includes(v))
+    mem[d].push(v)
+    return v
   }
 
-  localStorage.setItem("sensi_"+dev,JSON.stringify(sensi))
+  let data={
+    geral:unique(170,190),
+    red:unique(150,180),
+    x2:unique(170,190),
+    x4:unique(170,190),
+    btn:unique(27,60)
+  }
 
-  output.innerHTML=`
-  <b>${dev}</b><br><br>
-  Geral: ${sensi.geral}<br>
-  Vermelho: ${sensi.red}<br>
-  2X: ${sensi.x2}<br>
-  4X: ${sensi.x4}<br>
-  Botão: ${sensi.botao}%
+  localStorage.sensiDB=JSON.stringify(mem)
+
+  out.innerHTML=`
+    <b>${d}</b><br>
+    Geral: ${data.geral}<br>
+    Vermelho: ${data.red}<br>
+    2X: ${data.x2}<br>
+    4X: ${data.x4}<br>
+    Botão: ${data.btn}%
   `
 }
 
-function rand(min,max){
-  return Math.floor(Math.random()*(max-min+1))+min
+/* ================= FIRE EFFECT ================= */
+const c=document.getElementById("fire")
+const ctx=c.getContext("2d")
+let w,h,particles=[]
+
+function resize(){
+  w=c.width=window.innerWidth
+  h=c.height=window.innerHeight
+}
+window.onresize=resize
+resize()
+
+function spawn(){
+  particles.push({
+    x:Math.random()*w,
+    y:h+20,
+    r:Math.random()*4+2,
+    v:Math.random()*2+1,
+    a:1
+  })
 }
 
-/* ================= INJECT SIM ================= */
-function inject(){
-  const log=document.getElementById("log")
-  log.innerHTML=""
-  let steps=[
-    "[OK] Inicializando módulo...",
-    "[OK] Carregando parâmetros...",
-    "[OK] Aplicando sensibilidade...",
-    "[OK] Sincronizando perfil...",
-    "[SUCCESS] Injeção simulada concluída"
-  ]
-  let i=0
-  let timer=setInterval(()=>{
-    log.innerHTML+=steps[i]+"<br>"
-    log.scrollTop=9999
-    i++
-    if(i>=steps.length)clearInterval(timer)
-  },600)
+function loop(){
+  ctx.clearRect(0,0,w,h)
+  spawn()
+  particles.forEach(p=>{
+    p.y-=p.v
+    p.a-=0.01
+    ctx.fillStyle=`rgba(255,80,0,${p.a})`
+    ctx.beginPath()
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
+    ctx.fill()
+  })
+  particles=particles.filter(p=>p.a>0)
+  requestAnimationFrame(loop)
 }
+loop()
 </script>
+
 </body>
 </html>
