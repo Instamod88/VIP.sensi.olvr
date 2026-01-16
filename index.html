@@ -125,17 +125,46 @@ input[type=range]{width:100%}
 
 <script>
 /* ================= LOGIN ================= */
-function login(){
-  if(user.value==="oliveira.2ss" && pass.value==="HS70%"){
-    login.style.display="none"
-    panel.style.display="block"
-  }else{
-    error.style.display="block"
-    error.style.animation="none"
-    error.offsetHeight
-    error.style.animation="shake .4s"
+<!-- LOGIN -->
+<div id="login">
+  <input id="userInput" placeholder="Usuário">
+  <input id="passInput" type="password" placeholder="Senha">
+  <button id="loginBtn">ENTRAR</button>
+  <div id="error">LOGIN OU SENHA INCORRETOS</div>
+</div>
+
+<!-- PANEL -->
+<div id="panel" style="display:none;">
+  <!-- conteúdo do painel -->
+  Painel carregado!
+</div>
+
+<script>
+const userInput = document.getElementById("userInput");
+const passInput = document.getElementById("passInput");
+const loginBtn = document.getElementById("loginBtn");
+const loginDiv = document.getElementById("login");
+const panel = document.getElementById("panel");
+const error = document.getElementById("error");
+
+loginBtn.addEventListener("click", function(){
+  const user = userInput.value.trim();
+  const pass = passInput.value.trim();
+
+  if(user === "oliveira.2ss" && pass === "HS70%"){
+    // Login correto
+    loginDiv.style.display = "none";
+    panel.style.display = "block";
+    error.style.display = "none";
+  } else {
+    // Login errado
+    error.style.display = "block";
+    error.style.animation = "none";
+    void error.offsetWidth; // reinicia a animação
+    error.style.animation = "shake .4s";
   }
-}
+});
+</script>
 
 /* ================= TABS ================= */
 function openTab(id,btn){
