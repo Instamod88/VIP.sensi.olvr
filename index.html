@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Sensi Xitada IA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;background:linear-gradient(145deg,#020202,#001a1a);color:#fff;display:flex;justify-content:center;align-items:center;}
+@keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes neon{0%{box-shadow:0 0 10px #0ff}50%{box-shadow:0 0 30px #0ff}100%{box-shadow:0 0 10px #0ff}}
+#login{width:400px;padding:30px;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);border-radius:18px;animation:enter 1s,neon 3s infinite;text-align:center;}
+#login h1{color:#0ff;margin-bottom:20px}
+#login input,#login button{width:100%;padding:15px;margin-top:10px;border:none;border-radius:12px;font-size:16px}
+#login button{background:#0ff;color:#000;font-size:18px;cursor:pointer}
+#app{display:none;width:100%;max-width:540px;padding:20px;animation:enter 1s;}
+header{text-align:center;margin-bottom:15px}
+header h1{color:#0ff;font-size:34px}
+input#device{width:100%;padding:16px;border-radius:14px;border:none;font-size:18px;margin-bottom:10px}
+select,input#dpi,input#scope{width:100%;padding:14px;margin:5px 0;border-radius:12px;border:none;font-size:16px}
+button#gen{width:100%;padding:16px;margin-top:10px;border:none;border-radius:14px;background:#0ff;font-size:20px;cursor:pointer}
+#box{margin-top:20px;padding:20px;background:rgba(0,0,0,.55);border-radius:16px;animation:neon 3s infinite}
+footer{margin-top:20px;display:flex;justify-content:space-around}
+footer a{color:#0ff;text-decoration:none;font-size:18px}
+</style>
+</head>
+<body>
+
+<div id="login">
+<h1>Sensi Xitada IA</h1>
+<input id="u" placeholder="Usuário">
+<input id="s" type="password" placeholder="Senha">
+<button onclick="auth()">Entrar</button>
+</div>
+
+<div id="app">
+<header><h1>Sensi Xitada IA PRO</h1></header>
+
+<input id="device" placeholder="Ex: Samsung A12, iPhone 11">
+<input id="dpi" placeholder="DPI (opcional)">
+<select id="scope">
+<option value="geral">Geral</option>
+<option value="vermelho">Vermelho</option>
+<option value="x2">2X</option>
+<option value="x4">4X</option>
+</select>
+<button id="gen" onclick="generate()">GERAR IA</button>
+
+<div id="box"></div>
+
+<footer>
+<a href="https://www.instagram.com/_oliveira.2ss" target="_blank">Instagram</a>
+<a href="https://www.tiktok.com/@oliveira.2ss" target="_blank">TikTok</a>
+</footer>
+</div>
+
+<script>
+// ===== LOGIN =====
+function auth(){
+  if(u.value==="Oliveira.2ss" && s.value==="hs70%"){
+    localStorage.auth="1";
+    login.style.display="none";
+    app.style.display="block";
+  }else alert("Login incorreto");
+}
+if(localStorage.auth==="1"){
+  login.style.display="none";
+  app.style.display="block";
+}
+
+// ===== DEVICE CHECK =====
+const brands=["iphone","samsung","xiaomi","redmi","poco","motorola","oppo","realme","infinix"];
+function validDevice(name){return brands.some(b=>name.toLowerCase().includes(b));}
+
+// ===== IA ENGINE =====
+function saveDB(dev,data){
+  let db=JSON.parse(localStorage.iaDB||"{}");
+  if(!db[dev]) db[dev]=[];
+  db[dev].push(data);
+  localStorage.iaDB=JSON.stringify(db);
+}
+
+function avgDB(dev,key){
+  let db=JSON.parse(localStorage.iaDB||"{}");
+  if(!db[dev]) return null;
+  let vals=db[dev].map(d=>d[key]).filter(v=>typeof v==="number");
+  if(vals.length===0) return null;
+  return vals.reduce((a,b)=>a+b,0)/vals.length;
+}
+
+// IA REAL: calcula sensi baseado em média histórica e desvio
+function iaCalc(min,max,key,dev){
+  let avg=avgDB(dev,key);
+  let devia=Math.random()*0.1*(max-min); // ±10% do range
+  let base=avg??((min+max)/2);
+  let val=base+(Math.random()*devia*2-devia);
+  return Math.max(min,Math.min(max,Math.round(val)));
+}
+
+// ===== GERAR =====
+function generate(){
+  let dev=device.value.trim();
+  if(!validDevice(dev)) return alert("Dispositivo inválido");
+  let isI=dev.toLowerCase().includes("iphone");
+
+  let sensi={
+    geral:iaCalc(170,190,"geral",dev),
+    vermelho:iaCalc(150,180,"vermelho",dev),
+    x2:iaCalc(170,190,"x2",dev),
+    x4:iaCalc(170,190,"x4",dev),
+    dpi1:isI?"N/A":iaCalc(400,500,"dpi1",dev),
+    dpi2:isI?"N/A":iaCalc(600,900,"dpi2",dev),
+    botao:iaCalc(27,60,"botao",dev)
+  };
+
+  saveDB(dev,sensi);
+
+  box.innerHTML=`
+  <h3>${dev}</h3>
+  <p>Geral: ${sensi.geral}</p>
+  <p>Vermelho: ${sensi.vermelho}</p>
+  <p>2X: ${sensi.x2}</p>
+  <p>4X: ${sensi.x4}</p>
+  <p>DPI 1: ${sensi.dpi1}</p>
+  <p>DPI 2: ${sensi.dpi2}</p>
+  <p>Botão: ${sensi.botao}%</p>
+  `;
+}
+</script>
+</body>
+</html>
