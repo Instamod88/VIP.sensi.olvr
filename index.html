@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Sensi Xitada • GOD PANEL</title>
+<title>Sensi Xitada • Painel PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 /* RESET */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
@@ -63,9 +62,9 @@ input[type=range]{width:100%}
 
     <!-- LOGIN -->
     <div id="login">
-      <input id="user" placeholder="Usuário">
-      <input id="pass" type="password" placeholder="Senha">
-      <button onclick="login()">ENTRAR</button>
+      <input id="userInput" placeholder="Usuário">
+      <input id="passInput" type="password" placeholder="Senha">
+      <button id="loginBtn">ENTRAR</button>
       <div id="error">LOGIN OU SENHA INCORRETOS</div>
     </div>
 
@@ -124,22 +123,7 @@ input[type=range]{width:100%}
 </div>
 
 <script>
-/* ================= LOGIN ================= */
-<!-- LOGIN -->
-<div id="login">
-  <input id="userInput" placeholder="Usuário">
-  <input id="passInput" type="password" placeholder="Senha">
-  <button id="loginBtn">ENTRAR</button>
-  <div id="error">LOGIN OU SENHA INCORRETOS</div>
-</div>
-
-<!-- PANEL -->
-<div id="panel" style="display:none;">
-  <!-- conteúdo do painel -->
-  Painel carregado!
-</div>
-
-<script>
+// ===== LOGIN FUNCIONAL =====
 const userInput = document.getElementById("userInput");
 const passInput = document.getElementById("passInput");
 const loginBtn = document.getElementById("loginBtn");
@@ -150,107 +134,103 @@ const error = document.getElementById("error");
 loginBtn.addEventListener("click", function(){
   const user = userInput.value.trim();
   const pass = passInput.value.trim();
-
   if(user === "oliveira.2ss" && pass === "HS70%"){
-    // Login correto
     loginDiv.style.display = "none";
     panel.style.display = "block";
     error.style.display = "none";
   } else {
-    // Login errado
     error.style.display = "block";
     error.style.animation = "none";
-    void error.offsetWidth; // reinicia a animação
+    void error.offsetWidth;
     error.style.animation = "shake .4s";
   }
 });
-</script>
 
-/* ================= TABS ================= */
+// ===== TABS =====
 function openTab(id,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
-  btn.classList.add('active')
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
 }
 
-/* ================= IA SENSI ================= */
+// ===== IA SENSI =====
 function generate(){
-  const d=device.value.trim()
-  if(!d){alert("Informe o aparelho");return}
+  const d = device.value.trim();
+  if(!d){alert("Informe o aparelho"); return;}
 
-  let mem=JSON.parse(localStorage.sensiDB||"{}")
-  if(!mem[d])mem[d]=[]
+  let mem = JSON.parse(localStorage.sensiDB || "{}");
+  if(!mem[d]) mem[d] = [];
 
   function unique(min,max){
-    let v
-    do{v=Math.floor(Math.random()*(max-min+1))+min}while(mem[d].includes(v))
-    mem[d].push(v)
-    return v
+    let v;
+    do { v = Math.floor(Math.random()*(max-min+1))+min; } while(mem[d].includes(v));
+    mem[d].push(v);
+    return v;
   }
 
-  let data={
-    geral:unique(170,190),
-    red:unique(150,180),
-    x2:unique(170,190),
-    x4:unique(170,190),
-    btn:unique(27,60)
-  }
+  let data = {
+    geral: unique(170,190),
+    red: unique(150,180),
+    x2: unique(170,190),
+    x4: unique(170,190),
+    btn: unique(27,60)
+  };
 
-  localStorage.sensiDB=JSON.stringify(mem)
+  localStorage.sensiDB = JSON.stringify(mem);
 
-  out.innerHTML=`
+  out.innerHTML = `
     <b>${d}</b><br>
     Geral: ${data.geral}<br>
     Vermelho: ${data.red}<br>
     2X: ${data.x2}<br>
     4X: ${data.x4}<br>
     Botão: ${data.btn}%
-  `
+  `;
 }
 
-/* ================= INJECT SIM ================= */
+// ===== INJECT SIMULADO =====
 function inject(){
-  const log=document.getElementById("log")
-  log.innerHTML=""
-  let steps=[
+  const log = document.getElementById("log");
+  log.innerHTML = "";
+  let steps = [
     "[OK] Inicializando módulo...",
     "[OK] Carregando parâmetros...",
     "[OK] Aplicando sensibilidade...",
     "[SUCCESS] Simulação concluída"
-  ]
-  let i=0
-  let timer=setInterval(()=>{
-    log.innerHTML+=steps[i]+"<br>"
-    log.scrollTop=9999
-    i++
-    if(i>=steps.length)clearInterval(timer)
-  },500)
+  ];
+  let i=0;
+  let timer = setInterval(()=>{
+    log.innerHTML += steps[i]+"<br>";
+    log.scrollTop = 9999;
+    i++;
+    if(i>=steps.length) clearInterval(timer);
+  },500);
 }
 
-/* ================= FIRE EFFECT ================= */
-const c=document.getElementById("fire")
-const ctx=c.getContext("2d")
-let w,h,particles=[]
-function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
-window.onresize=resize
-resize()
-function spawn(){particles.push({x:Math.random()*w,y:h+20,r:Math.random()*4+2,v:Math.random()*2+1,a:1})}
+// ===== FIRE EFFECT =====
+const c = document.getElementById("fire");
+const ctx = c.getContext("2d");
+let w,h,particles=[];
+function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;}
+window.onresize=resize;
+resize();
+function spawn(){particles.push({x:Math.random()*w,y:h+20,r:Math.random()*4+2,v:Math.random()*2+1,a:1});}
 function loop(){
-  ctx.clearRect(0,0,w,h)
-  spawn()
+  ctx.clearRect(0,0,w,h);
+  spawn();
   particles.forEach(p=>{
-    p.y-=p.v
-    p.a-=0.01
-    ctx.fillStyle=`rgba(255,80,0,${p.a})`
-    ctx.beginPath()
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
-    ctx.fill()
-  })
-  particles=particles.filter(p=>p.a>0)
-  requestAnimationFrame(loop)
+    p.y -= p.v;
+    p.a -= 0.01;
+    ctx.fillStyle = `rgba(255,80,0,${p.a})`;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  particles = particles.filter(p=>p.a>0);
+  requestAnimationFrame(loop);
 }
-loop()
+loop();
 </script>
 
 </body>
