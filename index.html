@@ -124,22 +124,18 @@ input[type=range]{width:100%}
 </div>
 
 <script>
+/* ================= LOGIN ================= */
 function login(){
-  const u = user.value.trim()
-  const p = pass.value.trim()
-
-  if(u === "oliveira.2ss" && p === "HS70%"){
-    login.style.display = "none"
-    panel.style.display = "block"
-    error.style.display = "none"
+  if(user.value==="oliveira.2ss" && pass.value==="HS70%"){
+    login.style.display="none"
+    panel.style.display="block"
   }else{
-    error.style.display = "block"
-    error.style.animation = "none"
+    error.style.display="block"
+    error.style.animation="none"
     error.offsetHeight
-    error.style.animation = "shake .4s"
+    error.style.animation="shake .4s"
   }
 }
-</script>
 
 /* ================= TABS ================= */
 function openTab(id,btn){
