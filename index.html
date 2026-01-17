@@ -70,7 +70,7 @@ input[type=range]{width:100%}
         <button class="active" onclick="openTab('tab1',this)">Gerar Sensi</button>
         <button onclick="openTab('tab2',this)">Injetar</button>
         <button onclick="openTab('tab3',this)">Login Free Fire</button>
-        <button onclick="openTab('tab4',this)">Recursos Novos</button>
+        <button onclick="openTab('tab4',this)">Novas Atualizações</button>
       </div>
 
       <!-- ABA GERAR SENSI -->
@@ -126,11 +126,11 @@ input[type=range]{width:100%}
         </div>
       </div>
 
-      <!-- ABA RECURSOS NOVOS -->
+      <!-- ABA NOVAS ATUALIZAÇÕES -->
       <div id="tab4" class="panel">
         <div class="box">
-          <h2>Recursos Novos</h2>
-          <p>Ainda vazio. Futuras atualizações aqui.</p>
+          <h2>Novas Atualizações</h2>
+          <div id="novas" class="log"></div>
         </div>
       </div>
 
@@ -139,11 +139,10 @@ input[type=range]{width:100%}
   </div>
 </div>
 
-<!-- BOTAO FLUTUANTE LICENCE -->
 <button id="licenceBtn" onclick="openTab('tab4',document.querySelectorAll('.tabs button')[3])">Licence</button>
 
 <script>
-// LOGIN PAINEL
+// LOGIN
 const userInput = document.getElementById("userInput");
 const passInput = document.getElementById("passInput");
 const loginBtn = document.getElementById("loginBtn");
@@ -156,7 +155,8 @@ loginBtn.addEventListener("click", function(){
   if(user === "oliveira.2ss" && pass === "HS70%"){
     loginDiv.style.display = "none";
     panel.style.display = "block";
-    error.style.display = "none";
+    log("SensiX CORE iniciado");
+    core.init();
   } else {
     error.style.display = "block";
     error.style.animation = "none";
@@ -198,37 +198,37 @@ function generate(){
 
 // INJECT SIMULADO
 function inject(){
-  const log = document.getElementById("log");
-  log.innerHTML = "";
+  const logDiv = document.getElementById("log");
+  logDiv.innerHTML = "";
   let steps = ["[OK] Inicializando módulo...","[OK] Carregando parâmetros...","[OK] Aplicando sensibilidade...","[SUCCESS] Simulação concluída"];
   let i=0;
   let timer = setInterval(()=>{
-    log.innerHTML += steps[i]+"<br>";
-    log.scrollTop = 9999;
+    logDiv.innerHTML += steps[i]+"<br>";
+    logDiv.scrollTop = 9999;
     i++;
     if(i>=steps.length) clearInterval(timer);
   },500);
 }
 
-// LOGIN FREE FIRE EJECTAR
+// LOGIN FREE FIRE
 function eject(){
   const ffUser = document.getElementById("ffUser").value.trim();
   const ffPass = document.getElementById("ffPass").value.trim();
-  const log = document.getElementById("ffLog");
+  const logDiv = document.getElementById("ffLog");
   const bar = document.getElementById("ffProgress");
   if(!ffUser || !ffPass){alert("Digite usuário e senha do FF"); return;}
-  log.innerHTML = "";
+  logDiv.innerHTML = "";
   bar.style.width = "0%";
   let progress = 0;
   let timer = setInterval(()=>{
     progress += Math.floor(Math.random()*10)+5;
     if(progress>100) progress=100;
     bar.style.width = progress + "%";
-    log.innerHTML += `[INFO] Conectando... ${progress}%<br>`;
-    log.scrollTop = 9999;
+    logDiv.innerHTML += `[INFO] Conectando... ${progress}%<br>`;
+    logDiv.scrollTop = 9999;
     if(progress>=100){
       clearInterval(timer);
-      log.innerHTML += "[SUCCESS] Free Fire simulado iniciado!<br>";
+      logDiv.innerHTML += "[SUCCESS] Free Fire simulado iniciado!<br>";
     }
   },300);
 }
@@ -256,6 +256,17 @@ function loop(){
   requestAnimationFrame(loop);
 }
 loop();
+
+// CORE SENSIX (100 MÓDULOS)
+const core = {
+  modules: {},
+  init(){
+    for(let i=1;i<=100;i++){
+      this.modules[`module${i}`] = true;
+    }
+    log("100 módulos do SensiX CORE ativados");
+  }
+}
 </script>
 
 </body>
