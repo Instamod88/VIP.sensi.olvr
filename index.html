@@ -1,352 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Sensi Xitada • Painel PRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
-body{overflow:hidden;background:#000;color:#fff;}
-canvas#fire{position:fixed;inset:0;z-index:0}
-#app{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.card{width:95%;max-width:1200px;min-height:750px;background:linear-gradient(145deg,#050505,#0a0a0a);border-radius:30px;padding:40px;box-shadow:0 0 80px #ff3c00;animation:enter 1s ease}
-h1{text-align:center;font-size:50px;background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);-webkit-background-clip:text;color:transparent;margin-bottom:30px}
-#login{max-width:500px;margin:auto;animation:fadeIn 1s ease;position:relative;}
-input{width:100%;padding:18px;margin:10px 0;border:none;border-radius:16px;font-size:18px}
-button{width:100%;padding:18px;margin-top:10px;border:none;border-radius:18px;background:linear-gradient(90deg,#ff3c00,#ffaa00);font-size:20px;font-weight:bold;cursor:pointer}
-#error{margin-top:15px;text-align:center;color:#ff0000;font-weight:bold;display:none;animation:shake .4s}
-@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}100%{transform:translateX(0)}}
-#panel{display:none;margin-top:20px}
-.tabs{display:flex;gap:10px;margin-bottom:20px}
-.tabs button{flex:1;padding:14px;border:none;border-radius:14px;background:#111;color:#fff;font-size:16px;cursor:pointer}
-.tabs button.active{background:#ff3c00;color:#000;font-weight:bold}
-.panel{display:none;background:rgba(15,15,15,.85);border-radius:22px;padding:25px;box-shadow:0 0 30px #000}
-.panel.active{display:block}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-.box{background:#080808;padding:25px;border-radius:22px;box-shadow:0 0 25px #ff3c0033}
-.box h2{color:#ffaa00;margin-bottom:15px}
-.result{font-size:20px;line-height:1.6;margin-top:10px}
-.sliderBox{margin:18px 0}
-.sliderBox label{display:flex;justify-content:space-between;font-size:14px;opacity:.85}
-input[type=range]{width:100%}
-.log{margin-top:15px;font-family:monospace;font-size:13px;background:#000;padding:12px;border-radius:12px;height:120px;overflow:auto;color:#7cff00}
-.progressContainer{background:#222;border-radius:12px;margin-top:12px;overflow:hidden;height:25px;width:100%}
-.progressBar{height:25px;width:0%;background:linear-gradient(90deg,#ff3c00,#ffaa00);transition:0.3s}
-/* BOTAO FLUTUANTE */
-#licenceBtn{position:fixed;bottom:20px;right:20px;padding:15px 25px;background:linear-gradient(90deg,#ff3c00,#ffaa00);border:none;border-radius:18px;color:#000;font-weight:bold;cursor:pointer;z-index:999;box-shadow:0 0 20px #ff3c00;}
-/* ICONES REDES SOCIAIS */
-.socials{display:flex;gap:15px;justify-content:center;margin-top:15px}
-.socials img{width:40px;height:40px;cursor:pointer;transition:0.3s}
-.socials img:hover{transform:scale(1.2)}
-@keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-</style>
+  <meta charset="UTF-8">
+  <title>Free Fire • Auxílio de Mira PRO</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<canvas id="fire"></canvas>
+  <!-- Marca d’água -->
+  <div class="watermark">@oliveira.2ss</div>
 
-<div id="app">
-  <div class="card">
+  <div class="container">
+    <h1>🎯 AUXÍLIO DE MIRA FREE FIRE</h1>
+    <p class="subtitle">Calibração profissional • Não é hack</p>
 
-    <h1>SENSI XITADA</h1>
-
-    <!-- LOGIN PAINEL -->
-    <div id="login">
-      <input id="userInput" placeholder="Usuário">
-      <input id="passInput" type="password" placeholder="Senha">
-      <button id="loginBtn">ENTRAR</button>
-      <div id="error">LOGIN OU SENHA INCORRETOS</div>
-      <div class="socials">
-        <a href="https://www.instagram.com/_oliveira.2ss" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram"></a>
-        <a href="https://www.tiktok.com/@oliveira.2ss" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046128.png" alt="TikTok"></a>
-      </div>
+    <div class="panel">
+      <div class="item">Geral: <span id="geral"></span></div>
+      <div class="item">Red Dot: <span id="vermelho"></span></div>
+      <div class="item">Mira 2x: <span id="mira2x"></span></div>
+      <div class="item">Mira 4x: <span id="mira4x"></span></div>
+      <div class="item">AWM: <span id="awm"></span></div>
     </div>
 
-    <!-- PANEL PRINCIPAL -->
-    <div id="panel">
-
-      <div class="tabs">
-        <button class="active" onclick="openTab('tab1',this)">Gerar Sensi</button>
-        <button onclick="openTab('tab2',this)">Injetar</button>
-        <button onclick="openTab('tab3',this)">Login Free Fire</button>
-        <button onclick="openTab('tab4',this)">Novas Atualizações</button>
-      </div>
-
-      <!-- ABA GERAR SENSI -->
-      <div id="tab1" class="panel active">
-        <div class="grid">
-          <div class="box">
-            <h2>Gerador Inteligente</h2>
-            <input id="device" placeholder="Digite seu aparelho">
-            <button onclick="generate()">GERAR SENSI PERFEITA</button>
-            <div id="out" class="result"></div>
-          </div>
-
-          <div class="box">
-            <h2>Informações</h2>
-            <p>• IA exclusiva</p>
-            <p>• Aprendizado por aparelho</p>
-            <p>• Não repete valores</p>
-            <p>• Valores dinâmicos perfeitos</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ABA INJETAR -->
-      <div id="tab2" class="panel">
-        <div class="box">
-          <h2>Injetar (SIMULAÇÃO)</h2>
-          <div class="sliderBox">
-            <label><span>iFov</span><span id="fovVal">50</span></label>
-            <input type="range" min="0" max="100" value="50" oninput="fovVal.innerText=this.value">
-          </div>
-          <div class="sliderBox">
-            <label><span>iLock Recoil</span><span id="lockVal">30</span></label>
-            <input type="range" min="0" max="100" value="30" oninput="lockVal.innerText=this.value">
-          </div>
-          <div class="sliderBox">
-            <label><span>Mira Calibrada</span><span id="aimVal">70</span></label>
-            <input type="range" min="0" max="100" value="70" oninput="aimVal.innerText=this.value">
-          </div>
-          <button class="btn" onclick="inject()">INJETAR</button>
-          <div class="log" id="log"></div>
-        </div>
-      </div>
-
-      <!-- ABA LOGIN FREE FIRE -->
-      <div id="tab3" class="panel">
-        <div class="box">
-          <h2>Login Free Fire</h2>
-          <input id="ffUser" placeholder="Usuário FF">
-          <input id="ffPass" type="password" placeholder="Senha FF">
-          <button onclick="eject()">EJECTAR</button>
-          <div class="progressContainer"><div class="progressBar" id="ffProgress"></div></div>
-          <div class="log" id="ffLog"></div>
-        </div>
-      </div>
-
-      <!-- ABA NOVAS ATUALIZAÇÕES -->
-      <div id="tab4" class="panel">
-        <div class="box">
-          <h2>Novas Atualizações</h2>
-          <div id="novas" class="log"></div>
-        </div>
-      </div>
-
+    <div class="social">
+      <a href="https://www.instagram.com/_oliveira.2ss" target="_blank">
+        📸 Instagram
+      </a>
+      <a href="https://www.tiktok.com/@oliveira.2ss" target="_blank">
+        🎵 TikTok
+      </a>
     </div>
 
+    <div class="qrcode">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.instagram.com/_oliveira.2ss">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.tiktok.com/@oliveira.2ss">
+    </div>
   </div>
-</div>
 
-<button id="licenceBtn" onclick="openTab('tab4',document.querySelectorAll('.tabs button')[3])">Licence</button>
-
-<script>
-// LOGIN
-const userInput = document.getElementById("userInput");
-const passInput = document.getElementById("passInput");
-const loginBtn = document.getElementById("loginBtn");
-const loginDiv = document.getElementById("login");
-const panel = document.getElementById("panel");
-const error = document.getElementById("error");
-loginBtn.addEventListener("click", function(){
-  const user = userInput.value.trim();
-  const pass = passInput.value.trim();
-  if(user === "oliveira.2ss" && pass === "HS70%"){
-    loginDiv.style.display = "none";
-    panel.style.display = "block";
-    log("SensiX CORE iniciado");
-    core.init();
-  } else {
-    error.style.display = "block";
-    error.style.animation = "none";
-    void error.offsetWidth;
-    error.style.animation = "shake .4s";
-  }
-});
-
-// TABS
-function openTab(id,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(btn) btn.classList.add('active');
-}
-
-// IA SENSI
-function generate(){
-  const d = device.value.trim();
-  if(!d){alert("Informe o aparelho"); return;}
-  let mem = JSON.parse(localStorage.sensiDB || "{}");
-  if(!mem[d]) mem[d] = [];
-  function unique(min,max){
-    let v;
-    do { v = Math.floor(Math.random()*(max-min+1))+min; } while(mem[d].includes(v));
-    mem[d].push(v);
-    return v;
-  }
-  let data = {
-    geral: unique(170,190),
-    red: unique(150,180),
-    x2: unique(170,190),
-    x4: unique(170,190),
-    btn: unique(27,60)
-  };
-  localStorage.sensiDB = JSON.stringify(mem);
-  out.innerHTML = `<b>${d}</b><br>Geral: ${data.geral}<br>Vermelho: ${data.red}<br>2X: ${data.x2}<br>4X: ${data.x4}<br>Botão: ${data.btn}%`;
-}
-
-// INJECT SIMULADO
-function inject(){
-  const logDiv = document.getElementById("log");
-  logDiv.innerHTML = "";
-  let steps = ["[OK] Inicializando módulo...","[OK] Carregando parâmetros...","[OK] Aplicando sensibilidade...","[SUCCESS] Simulação concluída"];
-  let i=0;
-  let timer = setInterval(()=>{
-    logDiv.innerHTML += steps[i]+"<br>";
-    logDiv.scrollTop = 9999;
-    i++;
-    if(i>=steps.length) clearInterval(timer);
-  },500);
-}
-
-// LOGIN FREE FIRE
-function eject(){
-  const ffUser = document.getElementById("ffUser").value.trim();
-  const ffPass = document.getElementById("ffPass").value.trim();
-  const logDiv = document.getElementById("ffLog");
-  const bar = document.getElementById("ffProgress");
-  if(!ffUser || !ffPass){alert("Digite usuário e senha do FF"); return;}
-  logDiv.innerHTML = "";
-  bar.style.width = "0%";
-  let progress = 0;
-  let timer = setInterval(()=>{
-    progress += Math.floor(Math.random()*10)+5;
-    if(progress>100) progress=100;
-    bar.style.width = progress + "%";
-    logDiv.innerHTML += `[INFO] Conectando... ${progress}%<br>`;
-    logDiv.scrollTop = 9999;
-    if(progress>=100){
-      clearInterval(timer);
-      logDiv.innerHTML += "[SUCCESS] Free Fire simulado iniciado!<br>";
-    }
-  },300);
-}
-
-// FIRE EFFECT
-const c = document.getElementById("fire");
-const ctx = c.getContext("2d");
-let w,h,particles=[];
-function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;}
-window.onresize=resize;
-resize();
-function spawn(){particles.push({x:Math.random()*w,y:h+20,r:Math.random()*4+2,v:Math.random()*2+1,a:1});}
-function loop(){
-  ctx.clearRect(0,0,w,h);
-  spawn();
-  particles.forEach(p=>{
-    p.y -= p.v;
-    p.a -= 0.01;
-    ctx.fillStyle = `rgba(255,80,0,${p.a})`;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  particles = particles.filter(p=>p.a>0);
-  requestAnimationFrame(loop);
-}
-loop();
-
-// CORE SENSIX (100 MÓDULOS)
-const core = {
-  modules: {},
-  init(){
-    for(let i=1;i<=100;i++){
-      this.modules[`module${i}`] = true;
-    }
-    log("100 módulos do SensiX CORE ativados");
-  }
-}
-</script>
-
-<style>
-/* VISUAL CORE HACKER */
-.core-line{
-  color:#b56cff;
-  font-family:monospace;
-  font-size:13px;
-  opacity:0;
-  animation:coreIn .4s forwards;
-}
-.core-ok{
-  color:#7cff00;
-  text-shadow:0 0 8px #7cff00;
-}
-.core-glitch{
-  animation:glitch 0.2s infinite alternate;
-}
-@keyframes coreIn{
-  from{opacity:0;transform:translateX(-10px)}
-  to{opacity:1;transform:translateX(0)}
-}
-@keyframes glitch{
-  from{text-shadow:1px 0 #ff00ff,-1px 0 #00ffff}
-  to{text-shadow:-1px 0 #ff00ff,1px 0 #00ffff}
-}
-</style>
-
-<script>
-/* ===== SENSIX CORE VISUAL FEEDBACK ===== */
-
-const coreVisual = {
-  container: null,
-  active: false,
-
-  init(){
-    this.container = document.getElementById("novas");
-    if(!this.container) return;
-    this.container.innerHTML = "";
-    this.active = false;
-  },
-
-  activate(){
-    if(this.active) return;
-    this.active = true;
-    this.container.innerHTML = "";
-    let i = 1;
-
-    const interval = setInterval(()=>{
-      if(i > 100){
-        this.container.innerHTML += `
-          <div class="core-line core-ok core-glitch">
-            ✔ SENSIX CORE TOTALMENTE OPERACIONAL
-          </div>`;
-        return clearInterval(interval);
-      }
-
-      const line = document.createElement("div");
-      line.className = "core-line";
-      line.style.animationDelay = `${i*0.02}s`;
-      line.innerHTML = `[MODULE ${String(i).padStart(3,"0")}] STATUS: <span class="core-ok">ACTIVE</span>`;
-      this.container.appendChild(line);
-      this.container.scrollTop = this.container.scrollHeight;
-      i++;
-    }, 30);
-  }
-};
-
-/* HOOK NA ABA "Novas Atualizações" */
-const originalOpenTab = openTab;
-openTab = function(id, btn){
-  originalOpenTab(id, btn);
-  if(id === "tab4"){
-    setTimeout(()=>{
-      coreVisual.init();
-      coreVisual.activate();
-    },300);
-  }
-};
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
