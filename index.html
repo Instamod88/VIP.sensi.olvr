@@ -269,5 +269,84 @@ const core = {
 }
 </script>
 
+<style>
+/* VISUAL CORE HACKER */
+.core-line{
+  color:#b56cff;
+  font-family:monospace;
+  font-size:13px;
+  opacity:0;
+  animation:coreIn .4s forwards;
+}
+.core-ok{
+  color:#7cff00;
+  text-shadow:0 0 8px #7cff00;
+}
+.core-glitch{
+  animation:glitch 0.2s infinite alternate;
+}
+@keyframes coreIn{
+  from{opacity:0;transform:translateX(-10px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes glitch{
+  from{text-shadow:1px 0 #ff00ff,-1px 0 #00ffff}
+  to{text-shadow:-1px 0 #ff00ff,1px 0 #00ffff}
+}
+</style>
+
+<script>
+/* ===== SENSIX CORE VISUAL FEEDBACK ===== */
+
+const coreVisual = {
+  container: null,
+  active: false,
+
+  init(){
+    this.container = document.getElementById("novas");
+    if(!this.container) return;
+    this.container.innerHTML = "";
+    this.active = false;
+  },
+
+  activate(){
+    if(this.active) return;
+    this.active = true;
+    this.container.innerHTML = "";
+    let i = 1;
+
+    const interval = setInterval(()=>{
+      if(i > 100){
+        this.container.innerHTML += `
+          <div class="core-line core-ok core-glitch">
+            ✔ SENSIX CORE TOTALMENTE OPERACIONAL
+          </div>`;
+        return clearInterval(interval);
+      }
+
+      const line = document.createElement("div");
+      line.className = "core-line";
+      line.style.animationDelay = `${i*0.02}s`;
+      line.innerHTML = `[MODULE ${String(i).padStart(3,"0")}] STATUS: <span class="core-ok">ACTIVE</span>`;
+      this.container.appendChild(line);
+      this.container.scrollTop = this.container.scrollHeight;
+      i++;
+    }, 30);
+  }
+};
+
+/* HOOK NA ABA "Novas Atualizações" */
+const originalOpenTab = openTab;
+openTab = function(id, btn){
+  originalOpenTab(id, btn);
+  if(id === "tab4"){
+    setTimeout(()=>{
+      coreVisual.init();
+      coreVisual.activate();
+    },300);
+  }
+};
+</script>
+
 </body>
 </html>
