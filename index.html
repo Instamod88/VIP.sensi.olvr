@@ -5,30 +5,17 @@
 <title>Sensi Xitada • Painel PRO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial}
-
-/* FUNDO FIRE + PARTICULAS */
 body{overflow:hidden;background:#000;color:#fff;}
 canvas#fire{position:fixed;inset:0;z-index:0}
-
-/* APP CARD */
 #app{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
 .card{width:95%;max-width:1200px;min-height:750px;background:linear-gradient(145deg,#050505,#0a0a0a);border-radius:30px;padding:40px;box-shadow:0 0 80px #ff3c00;animation:enter 1s ease}
-
-/* TITULO */
 h1{text-align:center;font-size:50px;background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);-webkit-background-clip:text;color:transparent;margin-bottom:30px}
-
-/* LOGIN */
-#login{max-width:500px;margin:auto;animation:fadeIn 1s ease}
+#login{max-width:500px;margin:auto;animation:fadeIn 1s ease;position:relative;}
 input{width:100%;padding:18px;margin:10px 0;border:none;border-radius:16px;font-size:18px}
 button{width:100%;padding:18px;margin-top:10px;border:none;border-radius:18px;background:linear-gradient(90deg,#ff3c00,#ffaa00);font-size:20px;font-weight:bold;cursor:pointer}
 #error{margin-top:15px;text-align:center;color:#ff0000;font-weight:bold;display:none;animation:shake .4s}
-
-/* SHAKE */
 @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}100%{transform:translateX(0)}}
-
-/* PANEL */
 #panel{display:none;margin-top:20px}
 .tabs{display:flex;gap:10px;margin-bottom:20px}
 .tabs button{flex:1;padding:14px;border:none;border-radius:14px;background:#111;color:#fff;font-size:16px;cursor:pointer}
@@ -42,15 +29,15 @@ button{width:100%;padding:18px;margin-top:10px;border:none;border-radius:18px;ba
 .sliderBox{margin:18px 0}
 .sliderBox label{display:flex;justify-content:space-between;font-size:14px;opacity:.85}
 input[type=range]{width:100%}
-
-/* LOG */
 .log{margin-top:15px;font-family:monospace;font-size:13px;background:#000;padding:12px;border-radius:12px;height:120px;overflow:auto;color:#7cff00}
-
-/* BARRA PROGRESSO EJECTAR */
 .progressContainer{background:#222;border-radius:12px;margin-top:12px;overflow:hidden;height:25px;width:100%}
 .progressBar{height:25px;width:0%;background:linear-gradient(90deg,#ff3c00,#ffaa00);transition:0.3s}
-
-/* ANIMACAO */
+/* BOTAO FLUTUANTE */
+#licenceBtn{position:fixed;bottom:20px;right:20px;padding:15px 25px;background:linear-gradient(90deg,#ff3c00,#ffaa00);border:none;border-radius:18px;color:#000;font-weight:bold;cursor:pointer;z-index:999;box-shadow:0 0 20px #ff3c00;}
+/* ICONES REDES SOCIAIS */
+.socials{display:flex;gap:15px;justify-content:center;margin-top:15px}
+.socials img{width:40px;height:40px;cursor:pointer;transition:0.3s}
+.socials img:hover{transform:scale(1.2)}
 @keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style>
@@ -70,6 +57,10 @@ input[type=range]{width:100%}
       <input id="passInput" type="password" placeholder="Senha">
       <button id="loginBtn">ENTRAR</button>
       <div id="error">LOGIN OU SENHA INCORRETOS</div>
+      <div class="socials">
+        <a href="https://www.instagram.com/_oliveira.2ss" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram"></a>
+        <a href="https://www.tiktok.com/@oliveira.2ss" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046128.png" alt="TikTok"></a>
+      </div>
     </div>
 
     <!-- PANEL PRINCIPAL -->
@@ -79,6 +70,7 @@ input[type=range]{width:100%}
         <button class="active" onclick="openTab('tab1',this)">Gerar Sensi</button>
         <button onclick="openTab('tab2',this)">Injetar</button>
         <button onclick="openTab('tab3',this)">Login Free Fire</button>
+        <button onclick="openTab('tab4',this)">Recursos Novos</button>
       </div>
 
       <!-- ABA GERAR SENSI -->
@@ -134,20 +126,30 @@ input[type=range]{width:100%}
         </div>
       </div>
 
+      <!-- ABA RECURSOS NOVOS -->
+      <div id="tab4" class="panel">
+        <div class="box">
+          <h2>Recursos Novos</h2>
+          <p>Ainda vazio. Futuras atualizações aqui.</p>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </div>
 
+<!-- BOTAO FLUTUANTE LICENCE -->
+<button id="licenceBtn" onclick="openTab('tab4',document.querySelectorAll('.tabs button')[3])">Licence</button>
+
 <script>
-// ===== LOGIN FUNCIONAL DO PAINEL =====
+// LOGIN PAINEL
 const userInput = document.getElementById("userInput");
 const passInput = document.getElementById("passInput");
 const loginBtn = document.getElementById("loginBtn");
 const loginDiv = document.getElementById("login");
 const panel = document.getElementById("panel");
 const error = document.getElementById("error");
-
 loginBtn.addEventListener("click", function(){
   const user = userInput.value.trim();
   const pass = passInput.value.trim();
@@ -163,29 +165,26 @@ loginBtn.addEventListener("click", function(){
   }
 });
 
-// ===== TABS =====
+// TABS
 function openTab(id,btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
+  if(btn) btn.classList.add('active');
 }
 
-// ===== IA SENSI =====
+// IA SENSI
 function generate(){
   const d = device.value.trim();
   if(!d){alert("Informe o aparelho"); return;}
-
   let mem = JSON.parse(localStorage.sensiDB || "{}");
   if(!mem[d]) mem[d] = [];
-
   function unique(min,max){
     let v;
     do { v = Math.floor(Math.random()*(max-min+1))+min; } while(mem[d].includes(v));
     mem[d].push(v);
     return v;
   }
-
   let data = {
     geral: unique(170,190),
     red: unique(150,180),
@@ -193,29 +192,15 @@ function generate(){
     x4: unique(170,190),
     btn: unique(27,60)
   };
-
   localStorage.sensiDB = JSON.stringify(mem);
-
-  out.innerHTML = `
-    <b>${d}</b><br>
-    Geral: ${data.geral}<br>
-    Vermelho: ${data.red}<br>
-    2X: ${data.x2}<br>
-    4X: ${data.x4}<br>
-    Botão: ${data.btn}%
-  `;
+  out.innerHTML = `<b>${d}</b><br>Geral: ${data.geral}<br>Vermelho: ${data.red}<br>2X: ${data.x2}<br>4X: ${data.x4}<br>Botão: ${data.btn}%`;
 }
 
-// ===== INJECT SIMULADO =====
+// INJECT SIMULADO
 function inject(){
   const log = document.getElementById("log");
   log.innerHTML = "";
-  let steps = [
-    "[OK] Inicializando módulo...",
-    "[OK] Carregando parâmetros...",
-    "[OK] Aplicando sensibilidade...",
-    "[SUCCESS] Simulação concluída"
-  ];
+  let steps = ["[OK] Inicializando módulo...","[OK] Carregando parâmetros...","[OK] Aplicando sensibilidade...","[SUCCESS] Simulação concluída"];
   let i=0;
   let timer = setInterval(()=>{
     log.innerHTML += steps[i]+"<br>";
@@ -225,15 +210,13 @@ function inject(){
   },500);
 }
 
-// ===== LOGIN FREE FIRE EJECTAR =====
+// LOGIN FREE FIRE EJECTAR
 function eject(){
   const ffUser = document.getElementById("ffUser").value.trim();
   const ffPass = document.getElementById("ffPass").value.trim();
   const log = document.getElementById("ffLog");
   const bar = document.getElementById("ffProgress");
-  
   if(!ffUser || !ffPass){alert("Digite usuário e senha do FF"); return;}
-  
   log.innerHTML = "";
   bar.style.width = "0%";
   let progress = 0;
@@ -250,7 +233,7 @@ function eject(){
   },300);
 }
 
-// ===== FIRE EFFECT =====
+// FIRE EFFECT
 const c = document.getElementById("fire");
 const ctx = c.getContext("2d");
 let w,h,particles=[];
