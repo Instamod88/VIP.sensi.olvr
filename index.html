@@ -14,7 +14,7 @@ canvas#fire{position:fixed;inset:0;z-index:0}
 
 /* APP CARD */
 #app{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.card{width:95%;max-width:1200px;min-height:700px;background:linear-gradient(145deg,#050505,#0a0a0a);border-radius:30px;padding:40px;box-shadow:0 0 80px #ff3c00;animation:enter 1s ease}
+.card{width:95%;max-width:1200px;min-height:750px;background:linear-gradient(145deg,#050505,#0a0a0a);border-radius:30px;padding:40px;box-shadow:0 0 80px #ff3c00;animation:enter 1s ease}
 
 /* TITULO */
 h1{text-align:center;font-size:50px;background:linear-gradient(90deg,#ff3c00,#ffaa00,#ff3c00);-webkit-background-clip:text;color:transparent;margin-bottom:30px}
@@ -46,6 +46,10 @@ input[type=range]{width:100%}
 /* LOG */
 .log{margin-top:15px;font-family:monospace;font-size:13px;background:#000;padding:12px;border-radius:12px;height:120px;overflow:auto;color:#7cff00}
 
+/* BARRA PROGRESSO EJECTAR */
+.progressContainer{background:#222;border-radius:12px;margin-top:12px;overflow:hidden;height:25px;width:100%}
+.progressBar{height:25px;width:0%;background:linear-gradient(90deg,#ff3c00,#ffaa00);transition:0.3s}
+
 /* ANIMACAO */
 @keyframes enter{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -60,7 +64,7 @@ input[type=range]{width:100%}
 
     <h1>SENSI XITADA</h1>
 
-    <!-- LOGIN -->
+    <!-- LOGIN PAINEL -->
     <div id="login">
       <input id="userInput" placeholder="Usuário">
       <input id="passInput" type="password" placeholder="Senha">
@@ -74,6 +78,7 @@ input[type=range]{width:100%}
       <div class="tabs">
         <button class="active" onclick="openTab('tab1',this)">Gerar Sensi</button>
         <button onclick="openTab('tab2',this)">Injetar</button>
+        <button onclick="openTab('tab3',this)">Login Free Fire</button>
       </div>
 
       <!-- ABA GERAR SENSI -->
@@ -117,13 +122,25 @@ input[type=range]{width:100%}
         </div>
       </div>
 
+      <!-- ABA LOGIN FREE FIRE -->
+      <div id="tab3" class="panel">
+        <div class="box">
+          <h2>Login Free Fire</h2>
+          <input id="ffUser" placeholder="Usuário FF">
+          <input id="ffPass" type="password" placeholder="Senha FF">
+          <button onclick="eject()">EJECTAR</button>
+          <div class="progressContainer"><div class="progressBar" id="ffProgress"></div></div>
+          <div class="log" id="ffLog"></div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 </div>
 
 <script>
-// ===== LOGIN FUNCIONAL =====
+// ===== LOGIN FUNCIONAL DO PAINEL =====
 const userInput = document.getElementById("userInput");
 const passInput = document.getElementById("passInput");
 const loginBtn = document.getElementById("loginBtn");
@@ -206,6 +223,31 @@ function inject(){
     i++;
     if(i>=steps.length) clearInterval(timer);
   },500);
+}
+
+// ===== LOGIN FREE FIRE EJECTAR =====
+function eject(){
+  const ffUser = document.getElementById("ffUser").value.trim();
+  const ffPass = document.getElementById("ffPass").value.trim();
+  const log = document.getElementById("ffLog");
+  const bar = document.getElementById("ffProgress");
+  
+  if(!ffUser || !ffPass){alert("Digite usuário e senha do FF"); return;}
+  
+  log.innerHTML = "";
+  bar.style.width = "0%";
+  let progress = 0;
+  let timer = setInterval(()=>{
+    progress += Math.floor(Math.random()*10)+5;
+    if(progress>100) progress=100;
+    bar.style.width = progress + "%";
+    log.innerHTML += `[INFO] Conectando... ${progress}%<br>`;
+    log.scrollTop = 9999;
+    if(progress>=100){
+      clearInterval(timer);
+      log.innerHTML += "[SUCCESS] Free Fire simulado iniciado!<br>";
+    }
+  },300);
 }
 
 // ===== FIRE EFFECT =====
